@@ -7,6 +7,12 @@ def password():
     return render_template("password.html")
 
 @app.route("/propuesta")
-def home():
-    name = "Nat"
-    return render_template("index.html", name=name)
+def propuesta():
+    return render_template("index.html")
+
+@app.route("/yes")
+def yes():
+    return render_template("yes.html")
+
+if __name__ == "__main__":
+    app.run()

@@ -1,41 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nat, Be My Valentine?</title>
+    <title>Para Nat 💌</title>
 
     <style>
         body {
-            text-align: center;
-            font-family: Arial, sans-serif;
             background: linear-gradient(to bottom right, #ffdde1, #ee9ca7);
-            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
         }
 
-        h1 {
-            margin-top: 50px;
-            color: #b30059;
-            font-size: 36px;
+        .envelope {
+            width: 320px;
+            height: 220px;
+            background: #ff4d88;
+            position: relative;
+            cursor: pointer;
+            border-radius: 10px;
         }
 
-        img {
-            width: 280px;
-            border-radius: 20px;
-            margin-top: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        .flap {
+            width: 100%;
+            height: 100%;
+            background: #ff66a3;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top;
+            transition: transform 1s ease;
+            border-radius: 10px;
+        }
+
+        .letter {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease 0.8s;
+            border-radius: 10px;
+        }
+
+        .letter img {
+            width: 200px;
+            border-radius: 15px;
+            margin-top: 10px;
         }
 
         .buttons {
-            margin-top: 40px;
+            margin-top: 15px;
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 20px;
-            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
-            margin: 15px;
-            transition: all 0.3s ease;
+            margin: 5px;
         }
 
         #yesBtn {
@@ -44,51 +75,66 @@
         }
 
         #noBtn {
-            background-color: #666;
+            background-color: gray;
             color: white;
         }
+
+        .open .flap {
+            transform: rotateX(180deg);
+        }
+
+        .open .letter {
+            opacity: 1;
+        }
+
     </style>
 </head>
 
 <body>
 
-    <h1>Nat 💖<br>Will you be my Valentine?</h1>
+<div class="envelope" onclick="openLetter()" id="envelope">
+    <div class="flap"></div>
 
-    <img src="{{ url_for('static', filename='nat.jpeg') }}">
+    <div class="letter">
+        <h3>Nat 💖</h3>
+        <p>Will you be my Valentine?</p>
 
-    <div class="buttons">
-        <button id="yesBtn" onclick="window.location.href='/yes'">
-            Yes 💘
-        </button>
+        <img src="{{ url_for('static', filename='nat.jpeg') }}">
 
-        <button id="noBtn">
-            No 🙈
-        </button>
+        <div class="buttons">
+            <button id="yesBtn" onclick="event.stopPropagation(); window.location.href='/yes'">
+                Yes 💘
+            </button>
+
+            <button id="noBtn" onclick="event.stopPropagation(); shrinkNo()">
+                No 🙈
+            </button>
+        </div>
     </div>
+</div>
 
 <script>
+    function openLetter() {
+        document.getElementById("envelope").classList.add("open");
+    }
+
     let yesBtn = document.getElementById("yesBtn");
     let noBtn = document.getElementById("noBtn");
 
-    let yesSize = 20;
-    let noSize = 20;
+    let yesSize = 16;
+    let noSize = 16;
 
-    noBtn.addEventListener("click", function() {
+    function shrinkNo() {
+        yesSize += 6;
+        noSize -= 2;
 
-        // Yes grows
-        yesSize += 10;
         yesBtn.style.fontSize = yesSize + "px";
-        yesBtn.style.padding = (yesSize/2) + "px " + yesSize + "px";
+        noBtn.style.fontSize = noSize + "px";
 
-        // No shrinks
-        noSize -= 3;
-        if (noSize > 5) {
-            noBtn.style.fontSize = noSize + "px";
-            noBtn.style.padding = (noSize/2) + "px " + noSize + "px";
-        } else {
+        if (noSize <= 8) {
             noBtn.style.display = "none";
         }
-    });
+    }
 </script>
 
 </body>
